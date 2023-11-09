@@ -67,15 +67,15 @@ random.seed(42)
 random.shuffle(image_files)
 train_split_index = int(train_size * len(image_files))
 validation_split_index = int(train_size * len(image_files))
-test_split_index = len(image_files)-(train_split_index+validation_split_index)
+test_split_index = (train_split_index+validation_split_index)
 print("train_split_index is ",train_split_index)
 print("validation_split_index is ",validation_split_index)
 print("test_split_index is ",test_split_index)
 
 # Split the data into train and test sets
 train_image_files = image_files[:train_split_index]
-val_image_files = image_files[train_split_index:-validation_split_index]
-test_image_files = image_files[:]
+val_image_files = image_files[validation_split_index:test_split_index]
+test_image_files = image_files[test_split_index:]
 
 print(f"You have {len(train_image_files)} images for training")
 print(f"You have {len(val_image_files)} images for validation")
