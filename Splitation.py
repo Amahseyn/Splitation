@@ -8,8 +8,8 @@ test_size = .1
 if (train_size + validation_size + test_size !=1.0):
     raise Exception(f"The summation of train_size + validation_size + test_size must be 1 but in your case is {train_size + validation_size + test_size} ")
 # Paths to your image and mask folders
-image_folder = '/content/drive/MyDrive/Unet/224/Image224'
-mask_folder = '/content/drive/MyDrive/Unet/224/Mask224'
+image_folder = '/content/drive/MyDrive/MobileNet/Image224'
+mask_folder = '/content/drive/MyDrive/MobileNet/Mask224'
 print(len(os.listdir(image_folder)))
 print(len(os.listdir(mask_folder)))
 
@@ -17,10 +17,10 @@ print(len(os.listdir(mask_folder)))
 def array_difference(array1, array2):
     set1 = set(array1)
     set2 = set(array2)
-    
+
     difference1 = set1 - set2
     difference2 = set2 - set1
-    
+
     return list(difference1), list(difference2)
 diffrences = array_difference(list(os.listdir(image_folder)), list(os.listdir(mask_folder)))
 if (len(diffrences[0])!=0) or (len(diffrences[1])!=0):
@@ -66,16 +66,14 @@ random.seed(42)
 # Shuffle the list of image files
 random.shuffle(image_files)
 train_split_index = int(train_size * len(image_files))
-validation_split_index = int(train_size * len(image_files))
-test_split_index = (train_split_index+validation_split_index)
+validation_split_index = train_split_index+int(validation_size * len(image_files))
 print("train_split_index is ",train_split_index)
 print("validation_split_index is ",validation_split_index)
-print("test_split_index is ",test_split_index)
 
 # Split the data into train and test sets
 train_image_files = image_files[:train_split_index]
-val_image_files = image_files[validation_split_index:test_split_index]
-test_image_files = image_files[test_split_index:]
+val_image_files = image_files[train_split_index:validation_split_index]
+test_image_files = image_files[validation_split_index:]
 
 print(f"You have {len(train_image_files)} images for training")
 print(f"You have {len(val_image_files)} images for validation")
